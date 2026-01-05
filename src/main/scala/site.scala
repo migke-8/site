@@ -11,6 +11,7 @@ import migke.site.attribute.Attr
 import scala.compiletime.constValue
 import migke.site.element.RawString
 import migke.site.element.EscapedText
+import migke.site.css.*
 
 given seqToMap[T <: TagType]: Conversion[Seq[Attr[T]], AttributeMap[T]] with {
   def apply(seq: Seq[Attr[T]]): AttributeMap[T] = AttributeMap(seq*)
@@ -74,10 +75,9 @@ def tag[T <: TagType](
 
 def html(attrs: AttributeMap[HTML] = AttributeMap())(
     body: HTMLBuilder ?=> Unit = { x ?=> }
-)(using
-    HTMLBuilder
-): FullElement[HTML] =
+)(using HTMLBuilder): FullElement[HTML] =
   tag(constValue[HTML].asInstanceOf[HTML], attrs, body)
+
 def head(attrs: AttributeMap[Head] = AttributeMap())(
     body: HTMLBuilder ?=> Unit = { x ?=> }
 )(using HTMLBuilder): FullElement[Head] =
@@ -88,25 +88,42 @@ def title(attrs: AttributeMap[Title] = AttributeMap())(
 )(using HTMLBuilder): FullElement[Title] =
   tag(constValue[Title].asInstanceOf[Title], attrs, body)
 
-def base(attrs: AttributeMap[Base] = AttributeMap())(using
+def meta(attrs: AttributeMap[Meta] = AttributeMap())(using
     HTMLBuilder
-): VoidElement[Base] =
-  tag(constValue[Base].asInstanceOf[Base], attrs)
+): VoidElement[Meta] =
+  tag(constValue[Meta].asInstanceOf[Meta], attrs)
 
 def link(attrs: AttributeMap[Link] = AttributeMap())(using
     HTMLBuilder
 ): VoidElement[Link] =
   tag(constValue[Link].asInstanceOf[Link], attrs)
 
-def meta(attrs: AttributeMap[Meta] = AttributeMap())(using
+def script(attrs: AttributeMap[Script] = AttributeMap())(
+    body: String
+)(using HTMLBuilder): FullElement[Script] =
+  tag(
+    constValue[Script].asInstanceOf[Script],
+    attrs, {
+      raw(body)
+    }
+  )
+
+def base(attrs: AttributeMap[Base] = AttributeMap())(using
     HTMLBuilder
-): VoidElement[Meta] =
-  tag(constValue[Meta].asInstanceOf[Meta], attrs)
+): VoidElement[Base] =
+  tag(constValue[Base].asInstanceOf[Base], attrs)
 
 def style(attrs: AttributeMap[Style] = AttributeMap())(
-    body: HTMLBuilder ?=> Unit = { x ?=> }
+    body: CSSRuleGroup ?=> Unit = { x ?=> }
 )(using HTMLBuilder): FullElement[Style] =
-  tag(constValue[Style].asInstanceOf[Style], attrs, body)
+  val group = CSSRuleGroup({})
+  body(using group)
+  tag(
+    constValue[Style].asInstanceOf[Style],
+    attrs, {
+      raw(group.render)
+    }
+  )
 // Sectioning
 def body(attrs: AttributeMap[Body] = AttributeMap())(
     bodyFn: HTMLBuilder ?=> Unit = { x ?=> }
@@ -177,6 +194,45 @@ def h6(attrs: AttributeMap[H6] = AttributeMap())(
     body: HTMLBuilder ?=> Unit = { x ?=> }
 )(using HTMLBuilder): FullElement[H6] =
   tag(constValue[H6].asInstanceOf[H6], attrs, body)
+def ol(attrs: AttributeMap[Ol] = AttributeMap())(
+    body: HTMLBuilder ?=> Unit = { x ?=> }
+)(using HTMLBuilder): FullElement[Ol] =
+  tag(constValue[Ol].asInstanceOf[Ol], attrs, body)
+
+def dl(attrs: AttributeMap[Dl] = AttributeMap())(
+    body: HTMLBuilder ?=> Unit = { x ?=> }
+)(using HTMLBuilder): FullElement[Dl] =
+  tag(constValue[Dl].asInstanceOf[Dl], attrs, body)
+
+def dt(attrs: AttributeMap[Dt] = AttributeMap())(
+    body: HTMLBuilder ?=> Unit = { x ?=> }
+)(using HTMLBuilder): FullElement[Dt] =
+  tag(constValue[Dt].asInstanceOf[Dt], attrs, body)
+
+def dd(attrs: AttributeMap[Dd] = AttributeMap())(
+    body: HTMLBuilder ?=> Unit = { x ?=> }
+)(using HTMLBuilder): FullElement[Dd] =
+  tag(constValue[Dd].asInstanceOf[Dd], attrs, body)
+
+def figure(attrs: AttributeMap[Figure] = AttributeMap())(
+    body: HTMLBuilder ?=> Unit = { x ?=> }
+)(using HTMLBuilder): FullElement[Figure] =
+  tag(constValue[Figure].asInstanceOf[Figure], attrs, body)
+
+def figcaption(attrs: AttributeMap[Figcaption] = AttributeMap())(
+    body: HTMLBuilder ?=> Unit = { x ?=> }
+)(using HTMLBuilder): FullElement[Figcaption] =
+  tag(constValue[Figcaption].asInstanceOf[Figcaption], attrs, body)
+
+def pre(attrs: AttributeMap[Pre] = AttributeMap())(
+    body: HTMLBuilder ?=> Unit = { x ?=> }
+)(using HTMLBuilder): FullElement[Pre] =
+  tag(constValue[Pre].asInstanceOf[Pre], attrs, body)
+
+def blockquote(attrs: AttributeMap[Blockquote] = AttributeMap())(
+    body: HTMLBuilder ?=> Unit = { x ?=> }
+)(using HTMLBuilder): FullElement[Blockquote] =
+  tag(constValue[Blockquote].asInstanceOf[Blockquote], attrs, body)
 // grouping content
 def p(attrs: AttributeMap[P] = AttributeMap())(
     body: HTMLBuilder ?=> Unit = { x ?=> }
@@ -314,7 +370,46 @@ def td(attrs: AttributeMap[Td] = AttributeMap())(
     body: HTMLBuilder ?=> Unit = { x ?=> }
 )(using HTMLBuilder): FullElement[Td] =
   tag(constValue[Td].asInstanceOf[Td], attrs, body)
+// text level semantics
+def strong(attrs: AttributeMap[Strong] = AttributeMap())(
+    body: HTMLBuilder ?=> Unit = { x ?=> }
+)(using HTMLBuilder): FullElement[Strong] =
+  tag(constValue[Strong].asInstanceOf[Strong], attrs, body)
 
+def em(attrs: AttributeMap[Em] = AttributeMap())(
+    body: HTMLBuilder ?=> Unit = { x ?=> }
+)(using HTMLBuilder): FullElement[Em] =
+  tag(constValue[Em].asInstanceOf[Em], attrs, body)
+
+def code(attrs: AttributeMap[Code] = AttributeMap())(
+    body: HTMLBuilder ?=> Unit = { x ?=> }
+)(using HTMLBuilder): FullElement[Code] =
+  tag(constValue[Code].asInstanceOf[Code], attrs, body)
+
+def small(attrs: AttributeMap[Small] = AttributeMap())(
+    body: HTMLBuilder ?=> Unit = { x ?=> }
+)(using HTMLBuilder): FullElement[Small] =
+  tag(constValue[Small].asInstanceOf[Small], attrs, body)
+
+def sub(attrs: AttributeMap[Sub] = AttributeMap())(
+    body: HTMLBuilder ?=> Unit = { x ?=> }
+)(using HTMLBuilder): FullElement[Sub] =
+  tag(constValue[Sub].asInstanceOf[Sub], attrs, body)
+
+def sup(attrs: AttributeMap[Sup] = AttributeMap())(
+    body: HTMLBuilder ?=> Unit = { x ?=> }
+)(using HTMLBuilder): FullElement[Sup] =
+  tag(constValue[Sup].asInstanceOf[Sup], attrs, body)
+
+def i(attrs: AttributeMap[I] = AttributeMap())(
+    body: HTMLBuilder ?=> Unit = { x ?=> }
+)(using HTMLBuilder): FullElement[I] =
+  tag(constValue[I].asInstanceOf[I], attrs, body)
+
+def b(attrs: AttributeMap[B] = AttributeMap())(
+    body: HTMLBuilder ?=> Unit = { x ?=> }
+)(using HTMLBuilder): FullElement[B] =
+  tag(constValue[B].asInstanceOf[B], attrs, body)
 // ------------
 // attrs
 // ------------
@@ -354,6 +449,45 @@ def rel[T <: Link | A]: Attr[T] = Attr("rel", true)
 def media[T <: Style | Link | Source]: Attr[T] = Attr("media", true)
 
 // forms
+def select(attrs: AttributeMap[Select] = AttributeMap())(
+    body: HTMLBuilder ?=> Unit = { x ?=> }
+)(using HTMLBuilder): FullElement[Select] =
+  tag(constValue[Select].asInstanceOf[Select], attrs, body)
+
+def option(attrs: AttributeMap[Option] = AttributeMap())(
+    body: HTMLBuilder ?=> Unit = { x ?=> }
+)(using HTMLBuilder): FullElement[Option] =
+  tag(constValue[Option].asInstanceOf[Option], attrs, body)
+
+def optgroup(attrs: AttributeMap[Optgroup] = AttributeMap())(
+    body: HTMLBuilder ?=> Unit = { x ?=> }
+)(using HTMLBuilder): FullElement[Optgroup] =
+  tag(constValue[Optgroup].asInstanceOf[Optgroup], attrs, body)
+
+def fieldset(attrs: AttributeMap[Fieldset] = AttributeMap())(
+    body: HTMLBuilder ?=> Unit = { x ?=> }
+)(using HTMLBuilder): FullElement[Fieldset] =
+  tag(constValue[Fieldset].asInstanceOf[Fieldset], attrs, body)
+
+def legend(attrs: AttributeMap[Legend] = AttributeMap())(
+    body: HTMLBuilder ?=> Unit = { x ?=> }
+)(using HTMLBuilder): FullElement[Legend] =
+  tag(constValue[Legend].asInstanceOf[Legend], attrs, body)
+
+def audio(attrs: AttributeMap[Audio] = AttributeMap())(
+    body: HTMLBuilder ?=> Unit = { x ?=> }
+)(using HTMLBuilder): FullElement[Audio] =
+  tag(constValue[Audio].asInstanceOf[Audio], attrs, body)
+
+def source(attrs: AttributeMap[Source] = AttributeMap())(using
+    HTMLBuilder
+): VoidElement[Source] =
+  tag(constValue[Source].asInstanceOf[Source], attrs)
+
+def canvas(attrs: AttributeMap[Canvas] = AttributeMap())(
+    body: HTMLBuilder ?=> Unit = { x ?=> }
+)(using HTMLBuilder): FullElement[Canvas] =
+  tag(constValue[Canvas].asInstanceOf[Canvas], attrs, body)
 def value[T <: Input | Option | Button | Textarea]: Attr[T] =
   Attr("value", true)
 
@@ -364,8 +498,8 @@ def placeholder[T <: Input | Textarea]: Attr[T] =
   Attr("placeholder", true)
 
 def checked[T <: Input]: Attr[T] = Attr("checked", false)
-def disabled[T <: Input | Button | Select | Option | Textarea | Fieldset]:
-  Attr[T] = Attr("disabled", false)
+def disabled[T <: Input | Button | Select | Option | Textarea | Fieldset]
+    : Attr[T] = Attr("disabled", false)
 
 def readonly[T <: Input | Textarea]: Attr[T] = Attr("readonly", false)
 def required[T <: Input | Select | Textarea]: Attr[T] = Attr("required", false)
