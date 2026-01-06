@@ -1,17 +1,17 @@
-package migke.site
+package github.io.migke.site
 
 import scala.collection.mutable.ArrayBuffer
-import migke.site.types.*
-import migke.site.element.Element
-import migke.site.attribute.AttributeMap
-import migke.site.element.FullElement
-import migke.site.element.VoidElement
-import migke.site.element.render
-import migke.site.attribute.Attr
+import github.io.migke.site.types.*
+import github.io.migke.site.element.Element
+import github.io.migke.site.attribute.AttributeMap
+import github.io.migke.site.element.FullElement
+import github.io.migke.site.element.VoidElement
+import github.io.migke.site.element.render
+import github.io.migke.site.attribute.Attr
 import scala.compiletime.constValue
-import migke.site.element.RawString
-import migke.site.element.EscapedText
-import migke.site.css.*
+import github.io.migke.site.element.RawString
+import github.io.migke.site.element.EscapedText
+import github.io.migke.site.css.*
 
 given seqToMap[T <: TagType]: Conversion[Seq[Attr[T]], AttributeMap[T]] with {
   def apply(seq: Seq[Attr[T]]): AttributeMap[T] = AttributeMap(seq*)

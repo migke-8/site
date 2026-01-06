@@ -1,4 +1,4 @@
-package migke.site.types
+package github.io.migke.site.types
 
 import scala.compiletime.constValue
 

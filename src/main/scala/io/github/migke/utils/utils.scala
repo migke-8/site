@@ -1,4 +1,4 @@
-package migke.site.utils
+package github.io.migke.site.utils
 
 import java.util.regex.Pattern
 

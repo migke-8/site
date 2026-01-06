@@ -1,9 +1,9 @@
-package migke.site.element
+package github.io.migke.site.element
 
-import migke.site.types.TagType
-import migke.site.utils.escape
-import migke.site.attribute.AttributeMap
-import migke.site.HTMLBuilder
+import github.io.migke.site.types.TagType
+import github.io.migke.site.utils.escape
+import github.io.migke.site.attribute.AttributeMap
+import github.io.migke.site.HTMLBuilder
 
 type Element = RawString | VoidElement[TagType] | FullElement[TagType] |
   EscapedText

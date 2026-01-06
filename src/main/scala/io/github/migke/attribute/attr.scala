@@ -1,7 +1,7 @@
-package migke.site.attribute
+package github.io.migke.site.attribute
 
-import migke.site.types.TagType
-import migke.site.utils.escape
+import github.io.migke.site.types.TagType
+import github.io.migke.site.utils.escape
 
 case class Attr[T <: TagType](
     name: String,
@@ -12,7 +12,7 @@ case class Attr[T <: TagType](
 }
 class AttributeMap[T <: TagType](attributes: Attr[T]*) {
   private val attrs: Map[String, Attr[T]] =
-    attributes.foldLeft(Map())((x, y) => x + ((y.name, y)))
+    attributes.foldLeft(Map[String, Attr[T]]())((x, y) => x + (y.name -> y))
   inline def +=(inline attrs: Seq[Attr[T]] | AttributeMap[T]) = AttributeMap(
     (attrs match {
       case y: AttributeMap[T] => y.attrs.values.toSeq

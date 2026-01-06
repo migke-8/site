@@ -1,7 +1,7 @@
-package migke.site.css
+package github.io.migke.site.css
 
 import scala.collection.mutable
-import migke.site.value
+import github.io.migke.site.value
 import scala.collection.mutable.ArrayBuffer
 
 class CSSRuleGroup(rules: CSSRuleGroup ?=> Unit) {
